@@ -1,7 +1,7 @@
-FROM ruby:2.7-buster
+FROM ruby:2.6.6-buster
 
 ARG GEM_SOURCE=https://rubygems.org/
-ARG RAILS_VERSION=6.0.2.1
+ARG RAILS_VERSION=5.2.4.1
 
 #add sources
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -

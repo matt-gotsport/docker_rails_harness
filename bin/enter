@@ -1,0 +1,3 @@
+#!/bin/bash
+CURRENT_UID=$(id -u):$(id -g) docker-compose -p app -f server/$1_runtime.yml up --detach 
+docker exec -it app_$1_1 /bin/bash

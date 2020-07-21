@@ -1,7 +1,7 @@
 #clean will remove running containers and server config
 #sterile will clean, then remove ALL volumes and ALL images- even unrelated ones
 
-TARGET ?= demo
+TARGET ?= proscheduler
 DB ?= database
 
 ROOT = ${abspath .}
@@ -9,7 +9,7 @@ RUNTIME = ${ROOT}/server
 IMAGES = ${ROOT}/config/images
 COMPOSITIONS = ${ROOT}/config/compositions
 
-INSTANCE = ${abspath ${RUNTIME}/applications/${TARGET}}
+INSTANCE = ${abspath ${RUNTIME}/applications/}
 VOLUMES = ${abspath ${RUNTIME}/volumes}
 
 DATABASE_VOLUME = ${abspath ${VOLUMES}/${DB}}
@@ -34,17 +34,17 @@ instance: workspace_link database_link composition
 workspace_link:  
 	ln -sfn ${INSTANCE} ${RUNTIME}/workspace_volume
 
-database_link: 
+database_link: ${DATABASE_VOLUME}  
 	ln -sfn ${DATABASE_VOLUME} ${RUNTIME}/database_volume
 
 ${DATABASE_VOLUME}:
 	mkdir -p ${DATABASE_VOLUME}
 
 composition:
-	cp -rvf ${COMPOSITIONS}/application.yml ${RUNTIME}/runtime.yml
+	cp -rvf ${COMPOSITIONS}/application.yml ${RUNTIME}/web_runtime.yml
+	cp -rvf ${COMPOSITIONS}/database.yml ${RUNTIME}/db_runtime.yml
 
 clean:
-	rm -rf ${INSTANCE}
 	exec docker-clean
 
 cleaner: clean
