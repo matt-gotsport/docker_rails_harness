@@ -3,6 +3,7 @@ ROOT = ${abspath .}
 RUNTIME = ${ROOT}/runtime
 IMAGES = ${ROOT}/config/images
 COMPOSITIONS = ${ROOT}/config/compositions
+SCRIPTS = ${ROOT}/scripts
 
 INSTANCE = ${abspath ${RUNTIME}/apps/}
 VOLUMES = ${abspath ${RUNTIME}/volumes}
@@ -28,7 +29,11 @@ base_rails_image: ${BASERAILS_IMAGE_DIR}/Dockerfile
 db_image: ${DB_IMAGE_DIR}/Dockerfile 
 	docker build --tag gs/db ${DB_IMAGE_DIR}
 
-instance: workspace_link database_link compositions 
+instance: entry workspace_link database_link compositions 
+
+entry:
+	mkdir -p ${INSTANCE}
+	cp -rvf ${SCRIPTS}/* ${INSTANCE}
 
 workspace_link:  
 	ln -sfn ${INSTANCE} ${RUNTIME}/workspace_volume
