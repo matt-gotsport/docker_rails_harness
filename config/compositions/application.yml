@@ -5,17 +5,17 @@ services:
     image: gs/db
     volumes:
       - ./database_volume:/var/lib/postgresql/data
-    user: ${CURRENT_UID}
+    #user: ${CURRENT_UID}
     
   web:
-    image: gs/current_rails    
+    image: gs/base_rails    
     depends_on:
       - db
     volumes:
       - ./workspace_volume:/usr/local/workspace/
     working_dir: /usr/local/workspace/ 
     
-    command: bash entry.sh 
+    command: bash web_entry.sh 
     
     ports:
       - "3000:3000"

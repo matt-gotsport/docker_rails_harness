@@ -1,3 +1,21 @@
 #!/bin/bash
-CURRENT_UID=$(id -u):$(id -g) docker-compose -p app -f server/$1_runtime.yml up --detach 
-docker exec -it app_$1_1 /bin/bash
+
+if [ $1 = "ion" ]
+then
+    CURRENT_UID=$(id -u):$(id -g) docker-compose -p app -f runtime/ionic_dev.yml up --detach 
+    docker exec -it app_ionic_1 /bin/bash
+elif [ $1 = "db" ]
+then
+    CURRENT_UID=$(id -u):$(id -g) docker-compose -p app -f runtime/db.yml up --detach 
+    docker exec -it app_db_1 /bin/bash   
+elif [ $1 = "web" ]
+then
+    CURRENT_UID=$(id -u):$(id -g) docker-compose -p app -f runtime/web.yml up --detach 
+    docker exec -it app_web_1 /bin/bash   
+elif [ $1 = "webrun" ]
+then
+    CURRENT_UID=$(id -u):$(id -g) docker-compose -p app -f runtime/web.yml up 
+else
+    echo "BUZZ OFF"
+fi
+

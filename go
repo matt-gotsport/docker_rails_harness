@@ -1,12 +1,9 @@
 #!/bin/bash
 
-TARGET="web"
-
 if (( $# == 1 ))
 then
-    TARGET=$1
-    ./bin/enter $TARGET
+    ./bin/enter $1
 else
-    ./bin/run $TARGET
+    echo "./go web OR ./go db OR ./go ion"
 fi
 

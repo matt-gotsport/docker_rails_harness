@@ -1,18 +1,19 @@
 FROM postgres
 
-ARG user=gotsport
-ARG group=gotsport
-ARG uid=1000
-ARG gid=1000
+#ARG user=gotsport
+#ARG group=gotsport
+#ARG uid=1000
+#ARG gid=1000
 
-ENV POSTGRES_USER=${user}
+#ENV POSTGRES_USER=${user}
 ENV POSTGRES_PASSWORD=password
-ENV USER_HOME /home/${user}/
+#ENV USER_HOME /home/${user}/
 
-RUN addgroup --gid ${gid} ${group}                                                                      
-RUN adduser --system --disabled-password --home ${USER_HOME} --uid ${uid} --gid ${gid} --shell /bin/bash ${user} 
+#RUN addgroup --gid ${gid} ${group}                                                                      
+#RUN adduser --system --disabled-password --home ${USER_HOME} --uid ${uid} --gid ${gid} --shell /bin/bash ${user} 
 
 RUN chmod -R 777 /var/lib/postgresql 
-RUN chmod -R 777 /var/run/postgresql 
+RUN chmod -R 777 /var/run/ 
 
-USER ${user}
+#USER ${user}
+

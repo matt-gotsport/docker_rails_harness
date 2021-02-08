@@ -1,19 +1,15 @@
-#clean will remove running containers and server config
-#sterile will clean, then remove ALL volumes and ALL images- even unrelated ones
-
-TARGET ?= proscheduler
-DB ?= database
 
 ROOT = ${abspath .}
-RUNTIME = ${ROOT}/server
+RUNTIME = ${ROOT}/runtime
 IMAGES = ${ROOT}/config/images
 COMPOSITIONS = ${ROOT}/config/compositions
 
-INSTANCE = ${abspath ${RUNTIME}/applications/}
+INSTANCE = ${abspath ${RUNTIME}/apps/}
 VOLUMES = ${abspath ${RUNTIME}/volumes}
 
-DATABASE_VOLUME = ${abspath ${VOLUMES}/${DB}}
+DATABASE_VOLUME = ${abspath ${VOLUMES}/database}
 
+IONIC_IMAGE_DIR = ${IMAGES}/ionic
 BASERAILS_IMAGE_DIR = ${IMAGES}/base_rails
 DB_IMAGE_DIR = ${IMAGES}/db
 
@@ -21,7 +17,10 @@ export PATH := ${abspath ${ROOT}/bin/}:${PATH}
 
 default: images instance
 
-images: base_rails_image db_image
+images: ionic_image base_rails_image db_image
+
+ionic_image: ${IONIC_IMAGE_DIR}/Dockerfile 
+	docker build --tag gs/ionic ${IONIC_IMAGE_DIR}
 
 base_rails_image: ${BASERAILS_IMAGE_DIR}/Dockerfile 
 	docker build --tag gs/base_rails ${BASERAILS_IMAGE_DIR}
@@ -29,7 +28,7 @@ base_rails_image: ${BASERAILS_IMAGE_DIR}/Dockerfile
 db_image: ${DB_IMAGE_DIR}/Dockerfile 
 	docker build --tag gs/db ${DB_IMAGE_DIR}
 
-instance: workspace_link database_link composition 
+instance: workspace_link database_link compositions 
 
 workspace_link:  
 	ln -sfn ${INSTANCE} ${RUNTIME}/workspace_volume
@@ -40,9 +39,13 @@ database_link: ${DATABASE_VOLUME}
 ${DATABASE_VOLUME}:
 	mkdir -p ${DATABASE_VOLUME}
 
-composition:
-	cp -rvf ${COMPOSITIONS}/application.yml ${RUNTIME}/web_runtime.yml
-	cp -rvf ${COMPOSITIONS}/database.yml ${RUNTIME}/db_runtime.yml
+compositions:
+	cp -rvf ${COMPOSITIONS}/ionic_dev.yml ${RUNTIME}
+	cp -rvf ${COMPOSITIONS}/application.yml ${RUNTIME}/web.yml
+	cp -rvf ${COMPOSITIONS}/database.yml ${RUNTIME}/db.yml
+
+#clean will remove running containers and server config
+#sterile will clean, then remove ALL volumes and ALL images- even unrelated ones
 
 clean:
 	exec docker-clean
