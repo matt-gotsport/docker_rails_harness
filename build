@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./go iongen
+cd ./runtime/apps/ticket-scanner
+./build/build.sh ios
+
+

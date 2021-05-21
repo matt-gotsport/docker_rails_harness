@@ -46,7 +46,9 @@ ${DATABASE_VOLUME}:
 
 compositions:
 	cp -rvf ${COMPOSITIONS}/ionic_dev.yml ${RUNTIME}
-	cp -rvf ${COMPOSITIONS}/application.yml ${RUNTIME}/web.yml
+	cp -rvf ${COMPOSITIONS}/ionic_gen.yml ${RUNTIME}
+	cp -rvf ${COMPOSITIONS}/application.yml ${RUNTIME}/web_run.yml
+	cp -rvf ${COMPOSITIONS}/web_dev.yml ${RUNTIME}/web_dev.yml
 	cp -rvf ${COMPOSITIONS}/database.yml ${RUNTIME}/db.yml
 
 #clean will remove running containers and server config
